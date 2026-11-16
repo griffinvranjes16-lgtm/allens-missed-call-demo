@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Missed-Call Catcher — Demo for Allen's Plumbing</title>
+<style>
+  :root{--red:#c8102e;--black:#111;--white:#fff;--grey:#f4f4f4;--green:#1f7a3a}
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--black);background:var(--white)}
+  header{background:var(--black);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header b{font-size:20px} header b span{color:var(--red)} header small{opacity:.8}
+  .badge{background:var(--red);color:#fff;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em}
+  .hero{background:var(--red);color:#fff;padding:36px 20px;text-align:center}
+  .hero h1{margin:0 0 8px;font-size:30px;line-height:1.15} .hero p{margin:6px auto;max-width:640px;font-size:17px}
+  .hero .slogan{font-style:italic;opacity:.95}
+  main{max-width:920px;margin:0 auto;padding:24px 20px 40px}
+  h2{font-size:22px;margin:28px 0 8px} p.lede{font-size:17px;line-height:1.5}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px} @media(max-width:700px){.grid{grid-template-columns:1fr}}
+  .card{border:1px solid #ddd;border-radius:14px;padding:18px;background:#fff}
+  .card h3{margin:0 0 8px}
+  .phone{border:2px solid #111;border-radius:28px;padding:14px;background:#111;color:#fff;min-height:340px}
+  .phone .screen{background:#fff;color:#111;border-radius:18px;padding:14px;min-height:300px}
+  .msg{max-width:85%;padding:10px 12px;border-radius:14px;margin:8px 0;line-height:1.4;font-size:15px}
+  .msg.in{background:#eef2f7;border-bottom-left-radius:4px}
+  .msg.out{background:#d9f0d9;border-bottom-right-radius:4px;margin-left:auto}
+  .msg.sys{background:#fff3cd;text-align:center;margin:12px auto;font-size:13px}
+  button{cursor:pointer;border:0;border-radius:999px;padding:12px 18px;font-weight:700;font-size:15px}
+  .btn-red{background:var(--red);color:#fff} .btn-black{background:#111;color:#fff}
+  .btn-red:disabled,.btn-black:disabled{opacity:.5;cursor:default}
+  .steps{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .step{flex:1;min-width:140px;background:var(--grey);border-radius:12px;padding:12px}
+  .step b{display:block;font-size:18px}
+  .price{background:#111;color:#fff;border-radius:14px;padding:20px}
+  .price b{font-size:26px} .price span{color:#ffb3c0}
+  footer{border-top:1px solid #ddd;padding:18px 20px;font-size:13px;color:#555;text-align:center}
+  .note{background:#fff8e1;border:1px solid #ffe08a;border-radius:12px;padding:12px 14px;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div><b>ALLEN'S <span>PLUMBING</span></b> <small>· Sewer &amp; Drain Cleaning · Lansing, MI</small></div>
+  <div><span class="badge">DEMO — NOT A LIVE SERVICE</span></div>
+</header>
+<section class="hero">
+  <h1>Missed a call? We text back in seconds.</h1>
+  <p class="slogan">“Every One Deserves A Royal Flush.”</p>
+  <p>Allen's is open 24 hours — but when the crew is on a job, a call can go unanswered. This demo shows what happens next: the customer gets an instant text, answers two questions, and the job is booked. No lead lost.</p>
+  <p><b>Allen's Plumbing Sewer and Drain Cleaning Services · (517) 485-6855 · Open 24 hours · 21 years in business</b></p>
+</section>
+<main>
+  <h2>Try it — simulate a missed call</h2>
+  <p class="lede">Tap the button. This is a simulation on this page only — no real call is made, no real text is sent, and nothing is sent to Allen's.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>1 · Customer calls Allen's</h3>
+      <p>A customer with a sewer backup calls <b>(517) 485-6855</b> at 9:40pm. The crew is on another job, so the call goes unanswered.</p>
+      <button class="btn-red" id="missBtn" onclick="missedCall()">Simulate a missed call</button>
+      <button class="btn-black" id="resetBtn" onclick="resetDemo()" disabled>Reset demo</button>
+      <div class="steps">
+        <div class="step"><b>0 sec</b>Call missed</div>
+        <div class="step"><b>~5 sec</b>Text goes out</div>
+        <div class="step"><b>~1 min</b>Job booked</div>
+      </div>
+      <div class="note"><b>What Allen's gets:</b> a booked job with the customer's name, problem, address and time — instead of a voicemail nobody hears until morning.</div>
+    </div>
+    <div class="phone"><div class="screen" id="screen">
+      <div style="text-align:center;color:#666;font-size:13px">Text messages · Allen's Plumbing</div>
+      <div class="msg sys" id="status">No missed call yet. Tap “Simulate a missed call”.</div>
+      <div id="chat"></div>
+    </div></div>
+  </div>
+
+  <h2>What it answers, automatically</h2>
+  <div class="grid">
+    <div class="card"><h3>🕐 “Are you open now?”</h3><p>Yes — open 24 hours, emergency service available day or night.</p></div>
+    <div class="card"><h3>💧 “How much for a free estimate?”</h3><p>Free estimates — no obligation. The text asks what's wrong first, so the estimate call is short.</p></div>
+    <div class="card"><h3>🚽 “Sewer line dig-up &amp; repair?”</h3><p>Yes — that's the job Allen's specializes in. Also sewer main clearing, drain cleaning, water heater installation, bathtub installation, faucets / fixtures / pipes, and backflow preventer installation.</p></div>
+    <div class="card"><h3>📍 “Where are you?”</h3><p>409 W Mt Hope Ave, Lansing, MI 48910. Serving Lansing for 21 years.</p></div>
+  </div>
+
+  <h2>What this would cost Allen's</h2>
+  <div class="price">
+    <p><b>$150</b> one-time setup &nbsp;+&nbsp; <b>$199/mo</b></p>
+    <p style="margin:6px 0 0">Setup: their services, hours and answers loaded in. Monthly: missed-call text-back, booking questions, and a daily list of the jobs it caught. No monthly hosting cost for the demo itself. Allen's keeps their own number — no login of theirs is ever needed.</p>
+  </div>
+  <div class="note"><b>Honest note:</b> this page is a demo simulation. A real version needs a texting/phone provider and Allen's permission to connect it.</div>
+</main>
+<footer>
+  Demo for Allen's Plumbing Sewer and Drain Cleaning Services — to show what a missed-call text-back could look like. Not affiliated with or endorsed by Allen's. Real business facts only: (517) 485-6855 · 409 W Mt Hope Ave, Lansing, MI 48910 · Open 24 hours · Free estimates.
+</footer>
+<script>
+let t=[];
+function add(cls,txt){const d=document.createElement('div');d.className='msg '+cls;d.textContent=txt;document.getElementById('chat').appendChild(d);}
+function missedCall(){
+  document.getElementById('missBtn').disabled=true;document.getElementById('resetBtn').disabled=false;
+  document.getElementById('status').textContent='Missed call · 9:40 PM · (517) 485-6855 — no answer, crew on a job';
+  t.push(setTimeout(()=>add('out',"Hi, this is Allen's Plumbing — sorry we missed your call! We're open 24 hours. What's going on — drain, sewer, or water heater?"),600));
+  t.push(setTimeout(()=>add('in',"Sewer backup in the basement, it's getting worse"),2200));
+  t.push(setTimeout(()=>add('out',"Got it — that's urgent, we'll get you booked tonight. What's your address and a good time?"),3400));
+  t.push(setTimeout(()=>add('in',"1420 E Michigan Ave, Lansing — tonight if you can"),4800));
+  t.push(setTimeout(()=>add('out',"Booked — a tech will call you in 10 minutes to confirm tonight. Free estimate, no obligation. Thanks for calling Allen's!"),6200));
+  t.push(setTimeout(()=>{const s=document.createElement('div');s.className='msg sys';s.textContent='✓ Job booked for Allen\'s: sewer backup · 1420 E Michigan Ave · tonight';document.getElementById('chat').appendChild(s);},7600));
+}
+function resetDemo(){t.forEach(clearTimeout);t=[];document.getElementById('chat').innerHTML='';document.getElementById('status').textContent='No missed call yet. Tap “Simulate a missed call”.';document.getElementById('missBtn').disabled=false;document.getElementById('resetBtn').disabled=true;}
+</script>
+</body>
+</html>
